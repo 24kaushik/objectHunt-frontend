@@ -44,8 +44,23 @@
 
 .start_data{
     padding: 1rem;
+    height: 80vh;
+}
+.intro_data{
+    padding: 1rem;
+    height: 74vh;
+}
+
+.game_data{
+    padding: .5rem;
     height: 100vh;
 }
+
+.room_data{
+    padding: 1rem;
+  
+}
+
 
 .start{
     display: flex;
@@ -256,7 +271,7 @@
     justify-content: space-between;
     padding: .7rem;
     background-color: #13044e;
-    margin-bottom: 1rem;
+    margin-bottom: .2rem;
     border-radius: .5rem;
     border: 2px solid #fff;
 }
@@ -271,7 +286,7 @@
 }
 
 .image_area{
-    height: 60vh;
+    height: 40vh;
     width: 100%;
     background-color: #140d2e;
     border: 2px solid #fff;
@@ -279,7 +294,7 @@
 }
 
 .click_button{
-    margin-top: 1.5rem;
+    margin-top: .4rem;
     text-align: center;
     
 }
@@ -296,7 +311,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 1rem;
+    margin-top: .7rem;
     text-align: center;
     
 }
@@ -323,7 +338,7 @@
     flex-direction: row;
     justify-content: space-between;
     text-align: center;
-    margin-top: 1.5rem;
+    margin-top: .4rem;
  
 }
 
@@ -345,11 +360,7 @@
     background-color: #FF6500;
 }
 
-.display_head{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
+
 .chat_data{
     display: flex;
     flex-direction: column;
@@ -365,10 +376,10 @@
 }
 
 .data_1{
-    background-color: #ff8330;
+    background-color: #9ba2ac;
 }
 .data_2{
-    background-color: #ce5300;
+    background-color: #5c6064;
     margin-top: .7rem;
   }
   .person{
@@ -403,6 +414,28 @@
    .row th,.row td{
     padding: .4rem .2rem;
    }
+
+   .chat_leader button.active {
+    background-color: #FF6500;
+    color: white; 
+  }
+  
+
+  .box_display {
+    display: none;
+  }
+  
+  .box_display.show {
+    display: block; 
+    background-color: rgba(20, 18, 18, 0.3);
+    margin-top: .5rem;
+    padding: .5rem;
+  
+  }
+  .game_container{
+    height: 100%;
+  }
+  
 @media screen and (max-width:1450px) {
     .start_container{
        width: 50%;
@@ -422,6 +455,48 @@
 @media screen and (max-width:422px) {
     .home_head h1 {
         font-size: 1.8rem;
+    }
+    .menu_display h1{
+        font-size: 1.4rem;
+    }
+    .menu_display p ,.display_icons button, .setting_data button{
+        font-size: 1.1rem;
+    }
+    .setting_data p{
+        font-size: .9rem;
+    }
+    .guide_list li {
+        font-size: .9rem;
+    }
+    .menu_display{
+        top: 8rem;
+    }
+}
+@media screen and (max-width:350px) {
+    .object_data h1{
+        font-size: 1rem;
+    }
+    .object_data h2{
+        font-size: .9rem;
+    }
+    .chat_leader button{
+        font-size: .9rem;
+ 
+    }
+    .capture{
+        font-size: 1rem;
+    }
+    .submit_button button ,.person ,.head ,.input_data input {
+        font-size: 1rem;
+    }
+    .data_1 ,.data_2 ,.col_data ,.btn1, .btn2{
+        font-size: .8rem;
+    }
+    .input_data h1 {
+        font-size: 1.1rem;
+    }
+    .home_head h1{
+        font-size: 1.4rem;
     }
 }
 
