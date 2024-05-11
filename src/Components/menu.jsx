@@ -120,10 +120,11 @@ const playClickSound = () => {
     <div className={guide ? 'menu_display show' : 'menu_display'}>
         <h1>How To Play</h1>
         <ul className='guide_list'>
-          <li>This is 1st</li>
-          <li>This is 2nd</li>
-          <li>This is 3rd</li>
-          <li>This is 4th</li>
+        <li>Gather Players: Get a group together.</li>
+          <li>Set Rules: Establish boundaries and rules.</li>
+          <li>Define Objects: Decide what to hunt for.</li>
+          <li>Start Hunt: Give a time limit and begin.
+</li>
         </ul>
         <div className="display_icons">
           <Link to="/game"><button className="db_1">Play</button></Link>
