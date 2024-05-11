@@ -9,7 +9,7 @@ const room = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
         <div className="logo">
           <img src={logo} alt="" />
         </div>
-        <div className="start_data">
+        <div className="room_data">
         <Menu
        toggleSound={toggleSound}
        musicEnabled={musicEnabled}
