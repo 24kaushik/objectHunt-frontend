@@ -24,15 +24,14 @@ const games = () => {
 
   const[chat,setChat] = useState(false);
 
-  const toggleChat =()=>{
-    setChat(!chat);
+  const toggleChat = () => {
+    setChat(true);
+    setLeader(false);
   }
-
-
   const[leader,setLeader] = useState(false);
-
-  const toggleLeader=()=>{
-    setLeader(!leader);
+  const toggleLeader = () => {
+    setChat(false);
+    setLeader(true);
   }
   return (
     <>
@@ -60,58 +59,57 @@ const games = () => {
         )}
       </div>
       <div className="chat_leader">
-        <button onClick={() => { toggleChat(); playClickSound(); }}><MdChat className='btn_icon'/>Chat</button>
-        <button onClick={() => { toggleLeader(); playClickSound(); }}><MdLeaderboard className='btn_icon'/>Leaderboard</button>
+      <button onClick={() => { toggleChat(); playClickSound(); }} className={chat ? 'active' : ''}>
+          <MdChat className='btn_icon' />Chat
+        </button>
+        <button onClick={() => { toggleLeader(); playClickSound(); }} className={leader ? 'active' : ''}>
+          <MdLeaderboard className='btn_icon' />Leaderboard
+        </button>
       </div>
+      <div className={chat ? 'box_display show' : 'box_display menu_chat'}>
+      
+      <div className="chat_data">
+        <div className="data_1">
+          <IoPerson className='person'/>
+          <p>Hello dear</p>
+        </div>
+        <div className="data_2">
+          <IoPerson className='person'/>
+          <p>Hello</p>
+        </div>
+      </div>
+      
+     
+  </div>
+
+  <div className={leader ? 'box_display show' : 'box_display'}>
+    
+      <div className="leader_data">
+      <table className='table'>
+       <tr className='row head'>
+         <th>#</th>
+         <th>Name</th>
+         <th>Score</th>
+       </tr>
+        <tr className='row col_data'>
+           <td>1.</td>
+           <td>Maria</td>
+  <        td>20</td>
+       </tr>
+       <tr className='row col_data'>
+        <td>2.</td>
+          <td>Francisco</td>
+           <td>10</td>
+         </tr>
+
+</table>
+      </div>
+     
+  </div>
      </section>
      
 
-     <div className={chat ? 'menu_display show' : 'menu_display menu_chat'}>
-      <div className="display_head">
-        <h1>Chat box</h1>
-        <button onClick={() => { toggleChat(); playClickSound(); }}><RxCross1 className='cross'/></button>
-        </div>
-        <div className="chat_data">
-          <div className="data_1">
-            <IoPerson className='person'/>
-            <p>Hello dear</p>
-          </div>
-          <div className="data_2">
-            <IoPerson className='person'/>
-            <p>Hello</p>
-          </div>
-        </div>
-        
-       
-    </div>
-
-    <div className={leader ? 'menu_display show' : 'menu_display'}>
-      <div className="display_head">
-        <h1>Leader Board</h1>
-        <button onClick={() => { toggleLeader(); playClickSound(); }}><RxCross1/></button>
-        </div>
-        <div className="leader_data">
-        <table className='table'>
-         <tr className='row head'>
-           <th>#</th>
-           <th>Name</th>
-           <th>Score</th>
-         </tr>
-          <tr className='row col_data'>
-             <td>1.</td>
-             <td>Maria</td>
-    <        td>20</td>
-         </tr>
-         <tr className='row col_data'>
-          <td>2.</td>
-            <td>Francisco</td>
-             <td>10</td>
-           </tr>
-
-</table>
-        </div>
-       
-    </div>
+ 
 
     <audio ref={audioRef} src={clickSound} />
     </>

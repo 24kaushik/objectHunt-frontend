@@ -1,62 +1,75 @@
 @import url('https://fonts.googleapis.com/css2?family=Acme&family=Briem+Hand:wght@100..900&family=Orbitron:wght@400..900&display=swap');
 
-* {
+*{
     margin: 0;
     padding: 0;
     font-family: "Orbitron", sans-serif;
     font-weight: 600;
 }
 
-.main {
+.main{
+  
+  width: 100%;
+  height: 100%;
+  background-color: #07011e;
+  color: #fff;
 
-    width: 100%;
-    height: auto;
-    background-color: #07011e;
-    color: #fff;
-
-
+ 
 }
 
-.start_container {
+.start_container{
     width: 30%;
-    min-height: 100vh;
     height: 100%;
     margin: 0 auto;
     border-radius: 11px;
     border: 2px solid #FF6500;
-    background-image: url(/src/assets/bg.png);
+    background-image:  url(/src/assets/bg.png);
     background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-    box-sizing: border-box;
+     background-size: cover;
+     position: relative;
+
+    
 }
 
-.logo {
+.logo{
     width: 60%;
-
+ 
     margin: 1.5rem auto;
 }
 
-.logo img {
+.logo img{
     width: 100%;
     height: auto;
 }
 
-.start_data {
+.start_data{
     padding: 1rem;
-    height: 100%;
+    height: 80vh;
+}
+.intro_data{
+    padding: 1rem;
+    height: 74vh;
 }
 
-.start {
+.game_data{
+    padding: .5rem;
+    height: 100vh;
+}
+
+.room_data{
+    padding: 1rem;
+  
+}
+
+
+.start{
     display: flex;
     flex-direction: column;
     text-align: center;
     width: 100%;
-
+   
 }
-
-.btn1,
-.btn2 {
+.btn1 , .btn2{
     margin: 1rem 0;
     width: 100%;
     padding: 1rem 0;
@@ -75,153 +88,138 @@
     transition: 0.3s;
 }
 
-.btn1:hover,
-.btn2:hover {
+.btn1:hover ,.btn2:hover{
     background-color: #1a056e;
     border: 1px solid #fff;
     color: #fff;
     transition: .2s all ease-in-out;
 }
-
-.btn1 {
+.btn1{
     background-color: #feb72b;
-
-
+    
+  
 }
 
-.btn2 {
+.btn2{
     background-color: #13044e;
-
-
+   
+    
 }
 
-.menu_container {
+.menu_container{
+
     display: flex;
     flex-direction: column;
 }
 
-.room_btn {
+.room_btn{
     display: flex;
     flex-direction: row;
 }
-
-.input_data {
+.input_data{
     background-color: rgba(20, 18, 18, 0.3);
     border-radius: 11px;
     padding: 1rem .7rem;
 
 }
-
-.input_data h1 {
+.input_data h1{
     font-size: 1.5rem;
     padding-bottom: 1rem;
 }
 
-.input_data input {
+.input_data input{
     width: 90%;
     padding: .5rem .2rem;
     font-size: 1.2rem;
     border: 1px solid #FF6500;
-
+    
 }
 
-.room_btn button {
-    margin: 0 .5rem;
+.room_btn button{
+  margin: 0 .5rem;
 }
 
-.home_head {
-    padding: 0 1.5rem;
-    text-align: center;
-    text-decoration: none;
+.home_head{
+ padding: 0 1.5rem;
+ text-align: center;
+ text-decoration: none;
     text-shadow: 3px 3px #321870, 2px 2px #705218;
     transition: 0.3s;
 }
 
-.home_head h1 {
+.home_head h1{
     font-size: 3rem;
     letter-spacing: .2rem;
 }
 
-.home_head button {
+.home_head button{
 
     margin-top: 4rem;
 }
 
-.menu_icons {
+.menu_icons{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+     justify-content: space-between;
     font-size: 1.5rem;
-    position: absolute;
-    width: 100%;
-    bottom: 5%;
-    left: 0;
+    margin-top: 13rem;
+   
 }
 
-.icons {
+.icons{
     background-color: #13044e;
     border: 1px solid #718096;
     box-shadow: inset 2px 2px #fff, inset -2px -2px #936a1a;
-    padding: .8rem 1rem;
-    margin: 0 1rem;
+    padding: .8rem .6rem;
     border-radius: 40%;
     cursor: pointer;
 }
 
-.menu_display {
+.menu_display{
     /* background-color: rgba(0, 0, 0, 0.3);
    */
-    background-color: #1a056e;
+   background-color: #1a056e;
     padding: 1rem;
     position: absolute;
-    width: 93%;
+    width: 93%; 
     height: auto;
     top: 15rem;
-    left: 0;
+    left:0;
     border: 1px solid #fff;
     border-radius: .5rem;
     display: none;
 }
-
 .menu_display.show {
     display: block;
-}
-
-.menu_display h1 {
+} 
+.menu_display h1{
     color: #feb72b;
     margin-bottom: 1rem;
     font-size: 1.9rem;
     font-weight: 800;
 }
 
-.menu_display .display_icons {
+.menu_display .display_icons{
     margin: 1rem 0;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-
+    
 }
-
-.display_icons {
-    flex-direction: row-reverse;
-}
-
-.menu_display p {
+.menu_display p{
     font-size: 1.3rem;
 }
-
-.display_icons button,
-.setting_data button {
-    padding: .4rem 1rem;
-    font-size: 1.4rem;
-    border-radius: 0.5rem;
+.display_icons button ,.setting_data button{
+      padding: .4rem 1rem;
+      font-size: 1.4rem;
+      border-radius: 0.5rem;
     color: #fff;
     outline: none;
     cursor: pointer;
     border: 1px solid #718096;
 }
-
-.menu_display .display_input {
-    margin-left: .9rem;
+.menu_display .display_input{
+   margin-left: .9rem;
     padding: .5rem .2rem;
     border: 1px solid #FF6500;
     width: 68%;
@@ -230,81 +228,77 @@
     font-size: 1.3rem;
 }
 
-.db_1 {
+.db_1{
     background-color: #ce5300;
 }
 
-.db_2 {
+.db_2{
     background-color: rgb(249, 104, 104);
 }
 
-.error {
+.error{
     color: rgb(169, 0, 0);
     margin-top: .5rem;
-
+    
 }
-
-.setting_data {
+.setting_data{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin: .7rem 0;
 }
-
-.setting_data h3 {
+.setting_data h3{
     font-size: 1.4rem;
-
+   
 }
 
-.setting_data p {
+.setting_data p{
     font-size: .9rem;
-    color: #9ba2ac;
+    color:#9ba2ac;
 }
 
-.guide_list {
+.guide_list{
     margin-left: 1rem;
 }
-
-.guide_list li {
+.guide_list li{
     padding: .3rem 0;
 }
 
 
-.object_data {
+.object_data{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: .7rem;
     background-color: #13044e;
-    margin-bottom: 1rem;
+    margin-bottom: .2rem;
     border-radius: .5rem;
     border: 2px solid #fff;
 }
 
-.object_data h1 {
-    color: #FF6500;
+.object_data h1{
+   color: #FF6500;
+   font-size: 1.2rem;
+}
+
+.object_data h2{
     font-size: 1.2rem;
 }
 
-.object_data h2 {
-    font-size: 1.2rem;
-}
-
-.image_area {
-    height: 60vh;
+.image_area{
+    height: 40vh;
     width: 100%;
     background-color: #140d2e;
     border: 2px solid #fff;
     border-radius: .5rem;
 }
 
-.click_button {
-    margin-top: 1.5rem;
+.click_button{
+    margin-top: .4rem;
     text-align: center;
-
+    
 }
-
-.capture {
+.capture{
     width: 100%;
     border: 1px solid #718096;
     padding: .2rem 0;
@@ -313,16 +307,16 @@
     font-size: 1.3rem;
 }
 
-.chat_leader {
+.chat_leader{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 1rem;
+    margin-top: .7rem;
     text-align: center;
-
+    
 }
 
-.chat_leader button {
+.chat_leader button{
     background-color: #1a056e;
     color: #fff;
     border: 1px solid #ffff;
@@ -335,20 +329,20 @@
 
 }
 
-.btn_icon {
+.btn_icon{
     margin-right: .5rem;
 }
 
-.submit_button {
+.submit_button{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     text-align: center;
-    margin-top: 1.5rem;
-
+    margin-top: .4rem;
+ 
 }
 
-.submit_button button {
+.submit_button button{
     width: 100%;
     border: 1px solid #718096;
     padding: .2rem 0;
@@ -357,52 +351,43 @@
     font-size: 1.3rem;
 }
 
-.submit_btn {
+.submit_btn{
     background-color: #33ff00;
     margin-right: .5rem;
 }
 
-.retake_btn {
+.retake_btn{
     background-color: #FF6500;
 }
 
-.display_head {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
 
-.chat_data {
+.chat_data{
     display: flex;
     flex-direction: column;
 }
+.data_1 ,.data_2{
+  
+  width: 80%;
+  border-radius: .5rem;
+  display: flex;
+  flex-direction: row;
 
-.data_1,
-.data_2 {
-
-    width: 80%;
-    border-radius: .5rem;
-    display: flex;
-    flex-direction: row;
-
-    padding: .5rem;
+  padding: .5rem;
 }
 
-.data_1 {
-    background-color: #ff8330;
+.data_1{
+    background-color: #9ba2ac;
 }
-
-.data_2 {
-    background-color: #ce5300;
+.data_2{
+    background-color: #5c6064;
     margin-top: .7rem;
-}
-
-.person {
+  }
+  .person{
     padding-right: .5rem;
     font-size: 1.4rem;
-}
+  }
 
-.display_head button {
+  .display_head button{
     background-color: #ce5300;
     color: #fff;
     padding: .5rem;
@@ -410,49 +395,108 @@
     border: 1px solid #13044e;
     font-size: 1rem;
     height: 15%;
-}
+  }
 
-.leader_data {
+  .leader_data{
     display: flex;
     flex-direction: row;
-}
-
-.table {
+  }
+  .table{
     text-align: center;
     width: 100%;
-}
-
-.head {
+  }
+  .head{
     background-color: #ce5300;
-}
-
-.col_data {
+  }
+  .col_data{
     background-color: #718096;
-}
-
-.row th,
-.row td {
+  }
+   .row th,.row td{
     padding: .4rem .2rem;
-}
+   }
 
+   .chat_leader button.active {
+    background-color: #FF6500;
+    color: white; 
+  }
+  
+
+  .box_display {
+    display: none;
+  }
+  
+  .box_display.show {
+    display: block; 
+    background-color: rgba(20, 18, 18, 0.3);
+    margin-top: .5rem;
+    padding: .5rem;
+  
+  }
+  .game_container{
+    height: 100%;
+  }
+  
 @media screen and (max-width:1450px) {
-    .start_container {
-        width: 50%;
-
+    .start_container{
+       width: 50%;
+       
     }
-
+      
 }
 
 @media screen and (max-width:843px) {
-    .start_container {
-        width: 95%;
-
+    .start_container{
+       width: 95%;
+     
     }
-
+      
 }
 
 @media screen and (max-width:422px) {
     .home_head h1 {
         font-size: 1.8rem;
     }
+    .menu_display h1{
+        font-size: 1.4rem;
+    }
+    .menu_display p ,.display_icons button, .setting_data button{
+        font-size: 1.1rem;
+    }
+    .setting_data p{
+        font-size: .9rem;
+    }
+    .guide_list li {
+        font-size: .9rem;
+    }
+    .menu_display{
+        top: 8rem;
+    }
 }
+@media screen and (max-width:350px) {
+    .object_data h1{
+        font-size: 1rem;
+    }
+    .object_data h2{
+        font-size: .9rem;
+    }
+    .chat_leader button{
+        font-size: .9rem;
+ 
+    }
+    .capture{
+        font-size: 1rem;
+    }
+    .submit_button button ,.person ,.head ,.input_data input {
+        font-size: 1rem;
+    }
+    .data_1 ,.data_2 ,.col_data ,.btn1, .btn2{
+        font-size: .8rem;
+    }
+    .input_data h1 {
+        font-size: 1.1rem;
+    }
+    .home_head h1{
+        font-size: 1.4rem;
+    }
+}
+
