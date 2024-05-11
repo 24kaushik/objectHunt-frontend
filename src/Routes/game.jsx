@@ -4,7 +4,7 @@ const game = () => {
   return (
     <div className="start_container">
    
-    <div className="start_data">
+    <div className="game_data">
     <Game/>
     </div>
     </div>
