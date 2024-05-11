@@ -1,5 +1,5 @@
 // App.jsx
-import React , {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Game from './Routes/game';
 import Intro from './Routes/intro';
@@ -8,9 +8,9 @@ import Start from './Routes/start';
 import './App.css';
 import backgroundMusic from "./assets/sound/gameaudio.mp3"
 const App = () => {
-  
+
   // const [backgroundAudio] = useState(new Audio(backgroundMusic));
-  
+
 
 
   // // Function to play background music
@@ -65,22 +65,17 @@ const App = () => {
 
   return (
     <section className="main">
-      
-       
-  
-      
       <Routes>
         <Route path="/" element={<Intro />} />
         <Route path="/start" element={<Start />} />
-        <Route path="/room" element={ <Room
-         musicEnabled={musicEnabled}
-         toggleSound={toggleSound}
-         volume={volume}
-         handleVolumeChange={handleVolumeChange}
-      />} />
+        <Route path="/room" element={<Room
+          musicEnabled={musicEnabled}
+          toggleSound={toggleSound}
+          volume={volume}
+          handleVolumeChange={handleVolumeChange}
+        />} />
         <Route path="/game" element={<Game />} />
       </Routes>
-       
     </section>
   );
 };

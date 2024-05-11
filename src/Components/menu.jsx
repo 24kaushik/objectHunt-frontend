@@ -127,7 +127,6 @@ const playClickSound = () => {
 </li>
         </ul>
         <div className="display_icons">
-          <Link to="/game"><button className="db_1">Play</button></Link>
           <button className="db_2" onClick={() => { toggleGuide(); playClickSound(); }}>Close</button>
         </div>
     </div>
