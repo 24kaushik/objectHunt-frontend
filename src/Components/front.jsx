@@ -40,7 +40,6 @@ const front = () => {
           <li>This is 4th</li>
         </ul>
         <div className="display_icons">
-          <Link to="/game"><button className="db_1" onClick={playClickSound}>Play</button></Link>
           <button className="db_2" onClick={() => { toggleGuide(); playClickSound(); }}>Close</button>
         </div>
     </div>
