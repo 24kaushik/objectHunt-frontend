@@ -4,6 +4,7 @@ import logo from "../assets/logo.png";
 import Front from "../Components/front";
 import "../App.css"
 const Start = () => {
+
   return (
     <>
     <div className="start_container">
