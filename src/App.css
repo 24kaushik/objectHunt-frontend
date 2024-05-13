@@ -42,24 +42,23 @@
     height: auto;
 }
 
-.start_data {
+.start_data{
     padding: 1rem;
     height: 80vh;
 }
-
-.intro_data {
+.intro_data{
     padding: 1rem;
     height: 74vh;
 }
 
-.game_data {
+.game_data{
     padding: .5rem;
-    height: 100vh;
+  
 }
 
-.room_data {
+.room_data{
     padding: 1rem;
-
+   
 }
 
 
@@ -382,7 +381,8 @@
 .chat_data {
     display: flex;
     flex-direction: column;
-    height: 80%;
+    overflow-y: auto;
+    max-height:200px;
 }
 
 .chat_msg {
@@ -421,6 +421,8 @@
 .leader_data {
     display: flex;
     flex-direction: row;
+    overflow-y: auto;
+    max-height: 200px;
 }
 
 .table {
