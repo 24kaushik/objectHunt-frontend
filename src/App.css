@@ -382,7 +382,7 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    max-height:200px;
+    height:200px;
 }
 
 .chat_msg {

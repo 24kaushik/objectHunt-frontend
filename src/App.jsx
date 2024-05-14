@@ -43,40 +43,35 @@ const App = () => {
       backgroundAudio.loop = true;
       backgroundAudio.play();
     }
-    // Clean up function to stop background music when component unmounts
-    return () => {
-      backgroundAudio.pause();
-    };
+    
   }, [musicEnabled]); // Only re-run the effect if musicEnabled state changes
 
   const socket = useSocket();
-  const {setError} = useError();
+  const { setError } = useError();
 
-  useEffect(()=>{
-    socket.on("error", (msg)=>{
+  useEffect(() => {
+    socket.on("error", (msg) => {
       setError(msg);
     })
-  },[socket])
+  }, [socket])
 
   return (
-    
-      <UserProvider>
-        <section className="main">
-          <Error />
-          <Routes>
-            <Route path="/" element={<Intro />} />
-            <Route path="/start" element={<Start />} />
-            <Route path="/room" element={<Room
-              musicEnabled={musicEnabled}
-              toggleSound={toggleSound}
-              volume={volume}
-              handleVolumeChange={handleVolumeChange}
-            />} />
-            <Route path="/game" element={<Game />} />
-          </Routes>
-        </section>
-      </UserProvider>
-    
+    <UserProvider>
+      <section className="main">
+        <Error />
+        <Routes>
+          <Route path="/" element={<Intro />} />
+          <Route path="/start" element={<Start />} />
+          <Route path="/room" element={<Room
+            musicEnabled={musicEnabled}
+            toggleSound={toggleSound}
+            volume={volume}
+            handleVolumeChange={handleVolumeChange}
+          />} />
+          <Route path="/game" element={<Game />} />
+        </Routes>
+      </section>
+    </UserProvider>
   );
 };
 
