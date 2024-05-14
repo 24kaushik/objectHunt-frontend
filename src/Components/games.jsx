@@ -6,6 +6,7 @@ import { RxCross1 } from "react-icons/rx";
 import { IoPerson } from "react-icons/io5";
 import clickSound from '../assets/sound/mouseclick.mp3';
 import { useSocket } from '../context/SocketContext';
+import { useUser } from '../context/UserContext';
 const games = () => {
   const audioRef = useRef(null);
 
@@ -35,6 +36,21 @@ const games = () => {
   const socket = useSocket();
 
   const [leaderboard, setLeaderboard] = useState([]);
+  const [round, setRound] = useState(0);
+  const [roundTimer, setRoundTimer] = useState(0);
+  const [object, setObject] = useState("Object")
+
+  let roundInterval;
+  let remainingTime;
+
+  function startRoundInterval(time) {
+    remainingTime = time / 1000;
+    roundInterval = setInterval(() => {
+      setRoundTimer(prevValue => {
+        return prevValue + 1;
+      });
+    }, 1000);
+  }
 
   useEffect(() => {
     socket.on("message", (msg) => {
@@ -43,19 +59,37 @@ const games = () => {
     socket.on("leaderboard", (data) => {
       setLeaderboard(data);
     });
+    socket.on("game", (data) => {
+      if (data.round !== undefined) {
+        setRound(data.round)
+      }
+      if (data.msg === "round started") {
+        console.log("round")
+        clearInterval(roundInterval)
+        setRoundTimer(0);
+        startRoundInterval(data.time)
+        setRound(data.round)
+        setObject(data.object)
+      }
+    });
 
     return () => {
       socket.off("message");
+      socket.off("leaderboard");
+      socket.off("game");
     }
-
-
   }, [socket])
 
+  const chatRef = useRef();
+  useEffect(() => {
+    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [message]);
 
   const [chat, setChat] = useState("");
   const handleChat = (e) => {
     setChat(e.target.value)
   }
+
   const handleSend = (e) => {
     e.preventDefault()
     if (chat !== "") {
@@ -64,16 +98,18 @@ const games = () => {
     }
   }
 
+  const { user } = useUser();
+
   return (
     <>
       <section className="game_container">
         <div className="object_data">
-          <h1>Find A Object</h1>
-          <h2>0s left</h2>
+          <h1>Find {"aeiouAEIOU".includes(object[0]) ? "An" : "A"} {object}</h1>
+          <h2>{roundTimer}s left</h2>
         </div>
         <div className="object_data">
-          <h2>Score:0</h2>
-          <h2>Round:0</h2>
+          <h2>Score:{leaderboard.map((player) => { if (player.username === user) { return player.points } })}</h2>
+          <h2>Round:{round}</h2>
         </div>
         <div className="image_area">
 
@@ -99,15 +135,15 @@ const games = () => {
         </div>
         <div className={!leader ? 'box_display show' : 'box_display menu_chat'}>
 
-          <div className="chat_data">
-            {message.map((msg) => <div className="chat_msg">
+          <div className="chat_data" ref={chatRef}>
+            {message.map((msg, ind) => <div key={ind} className="chat_msg">
               <IoPerson className='person' />
               <p>{msg}</p>
             </div>)}
           </div>
           <form className='chat_send' onSubmit={handleSend}>
             <input type="text" className='chat_input' value={chat} onChange={handleChat} />
-            <button type='submit' className='btn_chat_sen'>Send</button>
+            <button type='submit' className='btn_chat_send'>Send</button>
           </form>
 
 
