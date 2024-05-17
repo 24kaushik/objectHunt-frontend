@@ -389,6 +389,9 @@
     display: flex;
     padding: .5em .3em;
 }
+.new_player{
+    color: #33ff00;
+}
 
 .chat_send {
     width: 100%;
