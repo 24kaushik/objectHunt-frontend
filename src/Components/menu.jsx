@@ -53,6 +53,14 @@ const menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
     }
   }
 
+  const createRoom = async () => {
+    if (inputValue) {
+      await setUser(inputValue.trim())
+      await socket.emit("createRoom", { username: inputValue.trim() })
+      navigate("/game");
+    }
+  }
+
   return (
     <>
       <div className="menu_container">
@@ -69,7 +77,7 @@ const menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
         </button>
 
         <div className="room_btn">
-          <button className='btn2' onClick={() => { createRoom(); playClickSound(); }}>
+          <button className='btn2' disabled={!inputValue} onClick={() => { createRoom(); playClickSound(); }}>
             Create Room
           </button>
           <button className='btn2' disabled={true} onClick={() => { joinRoom(); playClickSound(); }}>

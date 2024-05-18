@@ -53,8 +53,8 @@ const games = () => {
   }
 
   useEffect(() => {
-    socket.on("message", (msg) => {
-      setMessage(prevMessage => [...prevMessage, msg]);
+    socket.on("message", (data) => {
+      setMessage(prevMessage => [...prevMessage, { msg: data, type: "message" }]);
     })
     socket.on("leaderboard", (data) => {
       setLeaderboard(data);
@@ -72,11 +72,15 @@ const games = () => {
         setObject(data.object)
       }
     });
+    socket.on('newplayer', (data) => {
+      setMessage(prevMessage => [...prevMessage, { msg: data, type: "newplayer" }])
+    })
 
     return () => {
       socket.off("message");
       socket.off("leaderboard");
       socket.off("game");
+      socket.off("newplayer");
     }
   }, [socket])
 
@@ -136,9 +140,9 @@ const games = () => {
         <div className={!leader ? 'box_display show' : 'box_display menu_chat'}>
 
           <div className="chat_data" ref={chatRef}>
-            {message.map((msg, ind) => <div key={ind} className="chat_msg">
+            {message.map((data, ind) => <div key={ind} className={`chat_msg ${data.type === "newplayer" ? "new_player" : ""}`}>
               <IoPerson className='person' />
-              <p>{msg}</p>
+              <p>{data.msg}</p>
             </div>)}
           </div>
           <form className='chat_send' onSubmit={handleSend}>
