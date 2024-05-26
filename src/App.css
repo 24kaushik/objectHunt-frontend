@@ -396,14 +396,25 @@
 .chat_send {
     width: 100%;
     display: flex;
+    
 }
 
 .chat_input {
     width: 85%;
+    padding: .4rem .2rem;
+    font-size: 1rem;
+    
+
 }
 
 .btn_chat_send {
     width: 15%;
+    color: #fff;
+    background-color: #1a056e;
+    padding: .4rem .5rem;
+    font-size: 1rem;
+    border: 1px solid #fff;
+
 }
 
 .person {
@@ -487,7 +498,7 @@
 
 }
 
-@media screen and (max-width:422px) {
+@media screen and (max-width:482px) {
     .home_head h1 {
         font-size: 1.8rem;
     }
@@ -513,6 +524,10 @@
     .menu_display {
         top: 8rem;
     }
+    .btn_chat_send{
+        width: 25%;
+    }
+
 }
 
 @media screen and (max-width:350px) {
