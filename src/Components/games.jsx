@@ -44,7 +44,6 @@ const games = () => {
   let remainingTime;
 
   function startRoundInterval(time) {
-    remainingTime = time / 1000;
     roundInterval = setInterval(() => {
       setRoundTimer(prevValue => {
         return prevValue + 1;
@@ -70,6 +69,16 @@ const games = () => {
         startRoundInterval(data.time)
         setRound(data.round)
         setObject(data.object)
+      } else if (data.msg === "round ended") {
+        clearInterval(roundInterval)
+        setRoundTimer(0);
+        setObject("...")
+      }
+      else if (data.msg === "Match ended") {
+        clearInterval(roundInterval)
+        setRoundTimer(0);
+        setRound(0)
+        setObject("Object")
       }
     });
     socket.on('newplayer', (data) => {
@@ -109,11 +118,11 @@ const games = () => {
       <section className="game_container">
         <div className="object_data">
           <h1>Find {"aeiouAEIOU".includes(object[0]) ? "An" : "A"} {object}</h1>
-          <h2>{roundTimer}s left</h2>
+          {roundTimer !== 0 && <h2>{import.meta.env.VITE_ROUND_TIME - roundTimer}s left</h2>}
         </div>
         <div className="object_data">
           <h2>Score:{leaderboard.map((player) => { if (player.username === user) { return player.points } })}</h2>
-          <h2>Round:{round}</h2>
+          {round !== 0 && <h2>Round:{round}</h2>}
         </div>
         <div className="image_area">
 
