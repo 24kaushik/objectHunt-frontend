@@ -8,7 +8,8 @@ import { FaVolumeMute } from "react-icons/fa";
 import clickSound from '../assets/sound/mouseclick.mp3';
 import { useUser } from '../context/UserContext';
 import { useSocket } from '../context/SocketContext';
-const menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
+
+const Menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
 
   const audioRef = useRef(null);
   const playClickSound = () => {
@@ -23,51 +24,66 @@ const menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
   };
 
   const [guide, setGuide] = useState(false);
-
   const toggleGuide = () => {
     setGuide(!guide);
   };
 
+  const [room, setRoom] = useState(false);
+  const toggleRoom = () => {
+    setRoom(!room);
+  };
 
+  const [create, setCreate] = useState(false);
+  const toggleCreate = () => {
+    setCreate(!create);
+  };
+
+  const [join, setJoin] = useState(false);
+  const toggleJoin = () => {
+    setJoin(!join);
+  };
 
   const [music, setMusic] = useState(false);
-
   const toggleMusic = () => {
     setMusic(!music);
-  }
+  };
 
   const { user, setUser } = useUser();
   const socket = useSocket();
   const navigate = useNavigate();
 
-  const [inputValue, setInputValue] = useState(user);
+  const [inputValue, setInputValue] = useState(user || '');
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
 
   const joinRandomRoom = async () => {
     if (inputValue) {
-      await setUser(inputValue.trim())
-      await socket.emit("joinRandom", { username: inputValue.trim() })
+      await setUser(inputValue.trim());
+      await socket.emit("joinRandom", { username: inputValue.trim() });
       navigate("/game");
     }
-  }
+  };
 
   const createRoom = async () => {
     if (inputValue) {
-      await setUser(inputValue.trim())
-      await socket.emit("createRoom", { username: inputValue.trim() })
+      await setUser(inputValue.trim());
+      await socket.emit("createRoom", { username: inputValue.trim() });
       navigate("/game");
     }
-  }
+  };
 
   return (
     <>
       <div className="menu_container">
         <div className="input_data">
           <h1>Enter Your Name</h1>
-          <input type="text" placeholder='Enter your username here' readOnly={user} value={inputValue || user}
-            onChange={handleInputChange} />
+          <input
+            type="text"
+            placeholder='Enter your username here'
+            value={inputValue}
+            onChange={handleInputChange}
+          />
         </div>
 
         {!inputValue && <p className='error'>Please insert your name.</p>}
@@ -77,10 +93,10 @@ const menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
         </button>
 
         <div className="room_btn">
-          <button className='btn2' disabled={!inputValue} onClick={() => { createRoom(); playClickSound(); }}>
+          <button className='btn2' disabled={!inputValue} onClick={() => {  toggleRoom(); playClickSound(); }}>
             Create Room
           </button>
-          <button className='btn2' disabled={true} onClick={() => { joinRoom(); playClickSound(); }}>
+          <button className='btn2' disabled={!inputValue} onClick={() => { toggleJoin(); playClickSound(); }}>
             Join Room
           </button>
         </div>
@@ -113,16 +129,62 @@ const menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
           <li>Gather Players: Get a group together.</li>
           <li>Set Rules: Establish boundaries and rules.</li>
           <li>Define Objects: Decide what to hunt for.</li>
-          <li>Start Hunt: Give a time limit and begin.
-          </li>
+          <li>Start Hunt: Give a time limit and begin.</li>
         </ul>
         <div className="display_icons">
           <button className="db_2" onClick={() => { toggleGuide(); playClickSound(); }}>Close</button>
         </div>
       </div>
+
+      <div className={room ? "menu_display show" : "menu_display"}>
+        <h1>Create Room</h1>
+        <p>To create a room for playing the game, click the 'Create' button.</p>
+        <div className="display_icons">
+          <button className='db_1' onClick={() => { toggleCreate(); playClickSound(); }}>Create</button>
+          <button className='db_2' onClick={() => { toggleRoom(); playClickSound(); }}>Close</button>
+        </div>
+      </div>
+
+      <div className={create ? "menu_display show" : "menu_display"}>
+        <h1>Create Room</h1>
+        <div className="input_data">
+          <input
+            type="text"
+            placeholder='Enter the code'
+            value={inputValue}
+            onChange={handleInputChange}
+          />
+        </div>
+        {!inputValue && <p className='error'>Please insert your code.</p>}
+        <div className="display_icons">
+          <Link to="/game">
+            <button className='db_1' disabled={!inputValue}>Create</button>
+          </Link>
+          <button className='db_2' onClick={() => { toggleCreate(); playClickSound(); }}>Close</button>
+        </div>
+      </div>
+
+      <div className={join ? "menu_display show" : "menu_display"}>
+        <h1>Join Room</h1>
+        <p>CODE<input
+          type="text"
+          placeholder='Type Here'
+          className='display_input'
+          value={inputValue}
+          onChange={handleInputChange}
+        /></p>
+        {!inputValue && <p className='error'>Please insert code</p>}
+        <div className="display_icons">
+          <Link to="/game">
+            <button className='db_1' onClick={toggleJoin} disabled={!inputValue}>Join</button>
+          </Link>
+          <button className='db_2' onClick={() => { toggleJoin(); playClickSound(); }}>Close</button>
+        </div>
+      </div>
+
       <audio ref={audioRef} src={clickSound} />
     </>
-  )
-}
+  );
+};
 
-export default menu;
+export default Menu;
