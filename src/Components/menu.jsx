@@ -8,6 +8,7 @@ import { FaVolumeMute } from "react-icons/fa";
 import clickSound from '../assets/sound/mouseclick.mp3';
 import { useUser } from '../context/UserContext';
 import { useSocket } from '../context/SocketContext';
+import { useError } from '../context/ErrorContext';
 
 const Menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
 
@@ -26,16 +27,6 @@ const Menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
   const [guide, setGuide] = useState(false);
   const toggleGuide = () => {
     setGuide(!guide);
-  };
-
-  const [room, setRoom] = useState(false);
-  const toggleRoom = () => {
-    setRoom(!room);
-  };
-
-  const [create, setCreate] = useState(false);
-  const toggleCreate = () => {
-    setCreate(!create);
   };
 
   const [join, setJoin] = useState(false);
@@ -72,6 +63,28 @@ const Menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
       navigate("/game");
     }
   };
+  const { setError } = useError();
+
+  const [code, setCode] = useState(undefined);
+  const handleCodeChange = (event) => {
+    setCode(event.target.value);
+  }
+  const joinRoomById = async (e) => {
+    e.preventDefault()
+    if (code !== undefined) {
+      const data = await fetch(import.meta.env.VITE_HOST + "/room/checkRoom/" + code);
+      const response = await data.json();
+      console.log(response)
+      if (response.success) {
+        await setUser(inputValue.trim());
+        await socket.emit("joinById", JSON.stringify({ username: inputValue.trim(), roomId: code }));
+        navigate("/game");
+      }
+      else {
+        setError("Room not found!")
+      }
+    }
+  }
 
   return (
     <>
@@ -93,7 +106,7 @@ const Menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
         </button>
 
         <div className="room_btn">
-          <button className='btn2' disabled={!inputValue} onClick={() => {  toggleRoom(); playClickSound(); }}>
+          <button className='btn2' disabled={!inputValue} onClick={() => { createRoom(); playClickSound(); }}>
             Create Room
           </button>
           <button className='btn2' disabled={!inputValue} onClick={() => { toggleJoin(); playClickSound(); }}>
@@ -136,47 +149,19 @@ const Menu = ({ toggleSound, musicEnabled, volume, handleVolumeChange }) => {
         </div>
       </div>
 
-      <div className={room ? "menu_display show" : "menu_display"}>
-        <h1>Create Room</h1>
-        <p>To create a room for playing the game, click the 'Create' button.</p>
-        <div className="display_icons">
-          <button className='db_1' onClick={() => { toggleCreate(); playClickSound(); }}>Create</button>
-          <button className='db_2' onClick={() => { toggleRoom(); playClickSound(); }}>Close</button>
-        </div>
-      </div>
-
-      <div className={create ? "menu_display show" : "menu_display"}>
-        <h1>Create Room</h1>
-        <div className="input_data">
-          <input
-            type="text"
-            placeholder='Enter the code'
-            value={inputValue}
-            onChange={handleInputChange}
-          />
-        </div>
-        {!inputValue && <p className='error'>Please insert your code.</p>}
-        <div className="display_icons">
-          <Link to="/game">
-            <button className='db_1' disabled={!inputValue}>Create</button>
-          </Link>
-          <button className='db_2' onClick={() => { toggleCreate(); playClickSound(); }}>Close</button>
-        </div>
-      </div>
-
       <div className={join ? "menu_display show" : "menu_display"}>
         <h1>Join Room</h1>
         <p>CODE<input
           type="text"
           placeholder='Type Here'
           className='display_input'
-          value={inputValue}
-          onChange={handleInputChange}
+          value={code}
+          onChange={handleCodeChange}
         /></p>
-        {!inputValue && <p className='error'>Please insert code</p>}
+        {!code && <p className='error'>Please insert code</p>}
         <div className="display_icons">
           <Link to="/game">
-            <button className='db_1' onClick={toggleJoin} disabled={!inputValue}>Join</button>
+            <button className='db_1' onClick={(e) => { joinRoomById(e); toggleJoin(); }} disabled={!code}>Join</button>
           </Link>
           <button className='db_2' onClick={() => { toggleJoin(); playClickSound(); }}>Close</button>
         </div>

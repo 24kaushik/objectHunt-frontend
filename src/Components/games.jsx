@@ -19,13 +19,9 @@ const Games = () => {
   const [roundTimer, setRoundTimer] = useState(0);  // Initialized properly
   const [object, setObject] = useState("Object");
   const [chat, setChat] = useState("");
-  const [timeLeft, setTimeLeft] = useState(60); // Initial time set to 60 seconds
   const [submitted, setSubmitted] = useState(false);
-  const [timeExpired, setTimeExpired] = useState(false);
 
-  const timerRef = useRef(null);
   const chatRef = useRef();
-  const roundTimerRef = useRef(null);
 
   const playClickSound = () => {
     if (audioRef.current) {
@@ -43,56 +39,36 @@ const Games = () => {
 
   const toggleLeader = () => {
     setLeader(true);
-  };
+  }
 
-  const startRoundTimer = (duration) => {
-    clearInterval(roundTimerRef.current); // Clear any existing interval
-    setRoundTimer(duration);
-    roundTimerRef.current = setInterval(() => {
-      setRoundTimer((prevTimer) => {
-        if (prevTimer <= 1) {
-          clearInterval(roundTimerRef.current);
-          return 0;
-        }
-        return prevTimer - 1;
+  let roundInterval;
+  let remainingTime;
+
+  function startRoundInterval(time) {
+    remainingTime = time / 1000;
+    roundInterval = setInterval(() => {
+      setRoundTimer(prevValue => {
+        return prevValue + 1;
       });
     }, 1000);
   };
 
-  const startTimer = () => {
-    clearInterval(timerRef.current);
-    setTimeLeft(60);
-    setTimeExpired(false);
-    timerRef.current = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= 1) {
-          clearInterval(timerRef.current);
-          setTimeExpired(true);
-          setCapture(true);
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
-  };
+  
 
   const handleCaptureClick = () => {
     playClickSound();
     setCapture(true);
-    clearInterval(timerRef.current);
   };
 
   const handleRetakeClick = () => {
     playClickSound();
     setCapture(false);
-    startTimer();
   };
 
   const handleSubmitClick = () => {
     playClickSound();
     setSubmitted(true);
     setCapture(false);
-    clearInterval(timerRef.current);
   };
 
   useEffect(() => {
@@ -107,11 +83,20 @@ const Games = () => {
         setRound(data.round);
       }
       if (data.msg === "round started") {
-        clearInterval(timerRef.current);
         setRoundTimer(0);
-        startRoundTimer(data.time);
-        setRound(data.round);
-        setObject(data.object);
+        startRoundInterval(data.time)
+        setRound(data.round)
+        setObject(data.object)
+      } else if (data.msg === "round ended") {
+        clearInterval(roundInterval)
+        setRoundTimer(0);
+        setObject("...")
+      }
+      else if (data.msg === "Match ended") {
+        clearInterval(roundInterval)
+        setRoundTimer(0);
+        setRound(0)
+        setObject("Object")
       }
     });
     socket.on('newplayer', (data) => {
@@ -123,7 +108,6 @@ const Games = () => {
       socket.off("leaderboard");
       socket.off("game");
       socket.off("newplayer");
-      clearInterval(roundTimerRef.current); // Clear interval on unmount
     };
   }, [socket]);
 
@@ -132,11 +116,6 @@ const Games = () => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [message]);
-
-  useEffect(() => {
-    startTimer();
-    return () => clearInterval(timerRef.current); // Cleanup timer on component unmount
-  }, []);
 
   const handleChatChange = (e) => {
     setChat(e.target.value);
@@ -155,14 +134,14 @@ const Games = () => {
       <section className="game_container">
         <div className="object_data">
           <h1>Find {"aeiouAEIOU".includes(object[0]) ? "An" : "A"} {object}</h1>
-          <h2>{timeLeft}s left</h2> {/* Correctly displaying roundTimer */}
+          {roundTimer !== 0 && <h2>{import.meta.env.VITE_ROUND_TIME - roundTimer}s left</h2>}
         </div>
         <div className="object_data">
-          <h2>Score: {leaderboard.find(player => player.username === user)?.points || 0}</h2>
-          <h2>Round: {round}</h2>
+          <h2>Score:{leaderboard.map((player) => { if (player.username === user) { return player.points } })}</h2>
+          {round !== 0 && <h2>Round:{round}</h2>}
         </div>
         <div className="image_area">
-          {timeExpired && !submitted && <p>Time's up! Try Again.</p>}
+          
         </div>
 
         <div className="click_button" onClick={toggleCapture}>
