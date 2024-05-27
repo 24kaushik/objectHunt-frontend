@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import "../App.css";
 import { MdChat, MdLeaderboard } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import clickSound from '../assets/sound/mouseclick.mp3';
 import { useSocket } from '../context/SocketContext';
 import { useUser } from '../context/UserContext';
+import Webcam from 'react-webcam';
 
 const Games = () => {
   const audioRef = useRef(null);
@@ -53,7 +54,15 @@ const Games = () => {
     }, 1000);
   };
 
-  
+  const webcamRef =useRef(null);
+
+  useEffect(()=>{
+    if (capture) {
+      webcamRef.current?.video?.pause();
+    } else {
+      webcamRef.current?.video?.play();
+    }
+  }, [capture])
 
   const handleCaptureClick = () => {
     playClickSound();
@@ -129,6 +138,14 @@ const Games = () => {
     }
   };
 
+  const videoConstraints = {
+    width: 1280,
+    height: 720,
+    facingMode: "user"
+  };
+
+
+
   return (
     <>
       <section className="game_container">
@@ -140,8 +157,14 @@ const Games = () => {
           <h2>Score:{leaderboard.map((player) => { if (player.username === user) { return player.points } })}</h2>
           {round !== 0 && <h2>Round:{round}</h2>}
         </div>
+
         <div className="image_area">
-          
+          <Webcam audio={false} height={"100%"}
+            screenshotFormat="image/jpeg"
+            width={"100%"}
+            videoConstraints={videoConstraints}
+            ref={webcamRef}
+          />
         </div>
 
         <div className="click_button" onClick={toggleCapture}>
@@ -151,7 +174,7 @@ const Games = () => {
               <button className="retake_btn" onClick={handleRetakeClick}>Retake</button>
             </div>
           ) : (
-            <button className='capture' onClick={handleCaptureClick}>Capture</button>
+            <button className='capture' disabled={submitted} onClick={handleCaptureClick}>Capture</button>
           )}
         </div>
         <div className="chat_leader">
