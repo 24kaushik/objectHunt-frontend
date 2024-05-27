@@ -141,7 +141,7 @@ const Games = () => {
           {round !== 0 && <h2>Round:{round}</h2>}
         </div>
         <div className="image_area">
-          {timeExpired && !submitted && <p>Time's up! Try Again.</p>}
+          
         </div>
 
         <div className="click_button" onClick={toggleCapture}>
