@@ -5,7 +5,6 @@ import { IoPerson } from "react-icons/io5";
 import clickSound from '../assets/sound/mouseclick.mp3';
 import { useSocket } from '../context/SocketContext';
 import { useUser } from '../context/UserContext';
-import Webcam from 'react-webcam';
 
 const Games = () => {
   const audioRef = useRef(null);
@@ -20,7 +19,7 @@ const Games = () => {
   const [roundTimer, setRoundTimer] = useState(0);  // Initialized properly
   const [object, setObject] = useState("Object");
   const [chat, setChat] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(true);
 
   const chatRef = useRef();
 
@@ -54,15 +53,25 @@ const Games = () => {
     }, 1000);
   };
 
-  const webcamRef =useRef(null);
+  const videoRef = useRef(null);
 
-  useEffect(()=>{
-    if (capture) {
-      webcamRef.current?.video?.pause();
-    } else {
-      webcamRef.current?.video?.play();
-    }
-  }, [capture])
+  useEffect(() => {
+    const startVideo = async () => {
+      try {
+        const stream = await window.navigator.mediaDevices.getUserMedia({ video: true });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.onloadedmetadata = () => {
+            videoRef.current.play();
+          };
+        }
+      } catch (error) {
+        alert('You have to give the browser permission to use the Webcam and mic ;(');
+      }
+    };
+
+    startVideo();
+  }, []);
 
   const handleCaptureClick = () => {
     playClickSound();
@@ -74,10 +83,35 @@ const Games = () => {
     setCapture(false);
   };
 
-  const handleSubmitClick = () => {
+  useEffect(()=>{
+    if(capture){
+      videoRef.current.pause();
+    }
+    else{
+      videoRef.current.play();
+    }
+  }, [capture])
+
+  const handleSubmitClick = async () => {
     playClickSound();
     setSubmitted(true);
     setCapture(false);
+    
+    const video = videoRef.current;
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    // Set canvas dimensions to match video
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    // Draw the current video frame onto the canvas
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Get the image data URL from the canvas in JPG format
+    const picture = canvas.toDataURL('image/jpeg');
+
+    await socket.emit("upload", { image: picture });
   };
 
   useEffect(() => {
@@ -96,16 +130,24 @@ const Games = () => {
         startRoundInterval(data.time)
         setRound(data.round)
         setObject(data.object)
+        setSubmitted(false)
+        setMessage((prevMessage) => [...prevMessage, { msg: "Round has been started!!", type: "system" }]);
       } else if (data.msg === "round ended") {
         clearInterval(roundInterval)
         setRoundTimer(0);
         setObject("...")
+        setSubmitted(true)
+        setMessage((prevMessage) => [...prevMessage, { msg: "Round has been ended!!", type: "system" }]);
       }
       else if (data.msg === "Match ended") {
         clearInterval(roundInterval)
         setRoundTimer(0);
         setRound(0)
         setObject("Object")
+        setSubmitted(true)
+        setMessage((prevMessage) => [...prevMessage, { msg: "The match has been ended!!", type: "system" }]);
+        // setMessage((prevMessage) => [...prevMessage, { msg: `${leaderboard[0]?.username} has won the match with ${leaderboard[0]?.points}points`, type: "system" }]);
+        console.log(leaderboard)
       }
     });
     socket.on('newplayer', (data) => {
@@ -138,12 +180,6 @@ const Games = () => {
     }
   };
 
-  const videoConstraints = {
-    width: 1280,
-    height: 720,
-    facingMode: "user"
-  };
-
 
 
   return (
@@ -159,12 +195,7 @@ const Games = () => {
         </div>
 
         <div className="image_area">
-          <Webcam audio={false} height={"100%"}
-            screenshotFormat="image/jpeg"
-            width={"100%"}
-            videoConstraints={videoConstraints}
-            ref={webcamRef}
-          />
+          <video ref={videoRef} style={{width: "100%", height: "100%"}} playsInline></video>
         </div>
 
         <div className="click_button" onClick={toggleCapture}>
@@ -189,7 +220,7 @@ const Games = () => {
           <div className="chat_data" ref={chatRef}>
             {message.map((data, ind) => (
               <div key={ind} className={`chat_msg ${data.type === "newplayer" ? "new_player" : ""}`}>
-                <IoPerson className='person' />
+                {data.type == "message" ? <IoPerson className='person' /> : ""}
                 <p>{data.msg}</p>
               </div>
             ))}
